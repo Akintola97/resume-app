@@ -17,7 +17,7 @@
 // import { Sparkles, FileText } from "lucide-react";
 
 // export default function GeneratePage() {
-//   const [docType, setDocType] = useState("resume"); // "resume" or "cover"
+//   const [docType, setDocType] = useState("resume"); // "resume" or "cover_letter"
 //   const [jobTitle, setJobTitle] = useState("");
 //   const [company, setCompany] = useState("");
 //   const [description, setDescription] = useState("");
@@ -37,7 +37,7 @@
 //           jobTitle,
 //           company,
 //           description,
-//           type: docType, // still lowercase here, backend will normalize
+//           type: docType, // now always "resume" or "cover_letter"
 //         }),
 //       });
 
@@ -96,9 +96,9 @@
 //               </Button>
 //               <Button
 //                 type="button"
-//                 variant={docType === "cover" ? "default" : "outline"}
+//                 variant={docType === "cover_letter" ? "default" : "outline"}
 //                 className="flex-1 rounded-xl"
-//                 onClick={() => setDocType("cover")}
+//                 onClick={() => setDocType("cover_letter")}
 //               >
 //                 ✉️ Cover Letter
 //               </Button>
@@ -162,9 +162,15 @@
 
 
 
+
+
+
+
+
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import {
   Card,
@@ -187,6 +193,12 @@ export default function GeneratePage() {
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [generated, setGenerated] = useState(false); // ✅ track generation
+
+  // Reset "generated" state whenever user edits a field
+  useEffect(() => {
+    setGenerated(false);
+  }, [jobTitle, company, description, docType]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -201,7 +213,7 @@ export default function GeneratePage() {
           jobTitle,
           company,
           description,
-          type: docType, // now always "resume" or "cover_letter"
+          type: docType,
         }),
       });
 
@@ -209,6 +221,7 @@ export default function GeneratePage() {
       if (!res.ok) throw new Error(data.error || "Failed to generate");
 
       setMessage(`✅ ${data.document.title} created!`);
+      setGenerated(true); // ✅ show documents link
     } catch (err) {
       setMessage(`❌ ${err.message}`);
     } finally {
@@ -310,13 +323,23 @@ export default function GeneratePage() {
             {message && (
               <p className="text-sm text-muted-foreground">{message}</p>
             )}
-            <Button
-              type="submit"
-              disabled={loading}
-              className="rounded-xl bg-gradient-to-r from-emerald-500 to-indigo-500 text-white px-6 py-2 shadow-md hover:opacity-90 transition"
-            >
-              {loading ? "Generating..." : "Generate"}
-            </Button>
+
+            {/* ✅ Switch between Generate and Documents link */}
+            {generated ? (
+              <Link href="/documents">
+                <Button className="rounded-xl bg-gradient-to-r from-indigo-500 to-emerald-500 text-white px-6 py-2 shadow-md hover:opacity-90 transition">
+                  📄 View Documents
+                </Button>
+              </Link>
+            ) : (
+              <Button
+                type="submit"
+                disabled={loading}
+                className="rounded-xl bg-gradient-to-r from-emerald-500 to-indigo-500 text-white px-6 py-2 shadow-md hover:opacity-90 transition"
+              >
+                {loading ? "Generating..." : "Generate"}
+              </Button>
+            )}
           </CardFooter>
         </Card>
       </motion.form>

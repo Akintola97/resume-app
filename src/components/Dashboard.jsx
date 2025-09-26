@@ -14,7 +14,6 @@ import { FileText, User, Sparkles } from "lucide-react";
 import Link from "next/link";
 
 export default function Dashboard({ user }) {
-  console.log("Client got user:", user);
 
   const firstName = user?.given_name ?? user?.name?.split(" ")[0] ?? "User";
   const initials =
