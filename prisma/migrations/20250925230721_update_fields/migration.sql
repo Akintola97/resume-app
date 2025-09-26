@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "public"."User" ALTER COLUMN "achievements" SET DATA TYPE TEXT,
+ALTER COLUMN "education" SET DATA TYPE TEXT,
+ALTER COLUMN "experience" SET DATA TYPE TEXT;

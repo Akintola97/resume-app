@@ -1,0 +1,102 @@
+// generator client {
+//   provider = "prisma-client-js"
+// }
+
+// datasource db {
+//   provider  = "postgresql"
+//   url       = env("DATABASE_URL")
+//   directUrl = env("DIRECT_URL")
+// }
+
+// model User {
+//   id         String     @id @default(cuid())   // Internal app user ID
+//   kindeId    String     @unique                // Kinde auth ID
+//   email      String     @unique
+//   firstName  String?
+//   lastName   String?
+//   address    String?
+//   city       String?
+//   zipcode    String?
+//   phone      String?
+//   linkedIn   String?
+//   portfolio  String?
+//   createdAt  DateTime   @default(now())
+//   updatedAt  DateTime   @updatedAt
+
+//   documents  Document[] // One-to-many: a user can have many documents
+// }
+
+// enum DocumentType {
+//   RESUME
+//   COVER_LETTER
+// }
+
+// model Document {
+//   id          String       @id @default(cuid())
+//   title       String
+//   type        DocumentType // Resume or Cover Letter
+//   content     String       // Store plain text / markdown / JSON structure
+//   createdAt   DateTime     @default(now())
+//   updatedAt   DateTime     @updatedAt
+
+//   // Relationship to User
+//   userId      String
+//   user        User         @relation(fields: [userId], references: [id])
+// }
+
+
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id           String     @id @default(cuid())   // Internal app user ID
+  kindeId      String     @unique                // Kinde auth ID
+  email        String     @unique
+  firstName    String?
+  lastName     String?
+  address      String?
+  city         String?
+  zipcode      String?
+  phone        String?
+  linkedIn     String?
+  portfolio    String?
+
+  // 🔑 New fields for personalization
+  summary      String?    // short professional summary / bio
+  skills       String?    // comma-separated list of skills
+  experience   String?      // structured job history 
+  education    String?      // structured education 
+  achievements String?      // list of achievements / certifications
+
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  documents    Document[]
+}
+
+enum DocumentType {
+  RESUME
+  COVER_LETTER
+}
+
+model Document {
+  id        String       @id @default(cuid())
+  title     String
+  type      DocumentType
+  content   String
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  // Relationship to User
+  userId    String
+  user      User         @relation(fields: [userId], references: [id])
+}
