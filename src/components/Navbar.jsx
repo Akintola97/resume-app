@@ -61,7 +61,7 @@ try {
           prefetch={false}
           className="font-semibold tracking-tight"
         >
-          Newsletter
+          Resume
         </Link>
 
         <div className="flex items-center gap-2">
