@@ -10,7 +10,7 @@
 #       - .env
 
 
-version: "3.9"
+
 services:
   resume-app:
     build:
