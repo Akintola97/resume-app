@@ -1,10 +1,31 @@
+# version: "3.9"
+# services:
+#   resume-app:
+#     build: .
+#     container_name: resume-app
+#     restart: always
+#     ports:
+#       - "3001:3000"
+#     env_file:
+#       - .env
+
+
+
+
 version: "3.9"
+
 services:
   resume-app:
     build: .
     container_name: resume-app
     restart: always
-    ports:
-      - "3001:3000"
+    expose:
+      - "3000"         # app is visible only inside boltluna-net
     env_file:
       - .env
+    networks:
+      - boltluna-net   # 👈 join the shared network
+
+networks:
+  boltluna-net:
+    external: true     # 👈 use the one you created manually
