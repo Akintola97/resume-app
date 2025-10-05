@@ -12,53 +12,18 @@
 
 
 services:
-  caddy:
-    image: caddy:2
-    container_name: resume-caddy
-    restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile:ro
-      - caddy_data:/data
-      - caddy_config:/config
-    depends_on:
-      - resume-app
-
-    
-  db:
-    image: postgres:16
-    container_name: resume-db
-    restart: unless-stopped
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: resume-app
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-
-
   resume-app:
     build:
       context: .
     container_name: resume-app
-    restart: unless-stopped
+    restart: always
     env_file:
-      - ./.env.prod
-    environment:
-      PORT: "3000"
-      HOSTNAME: "0.0.0.0"
-      NODE_ENV: "production"
+      - .env
     expose:
       - "3000"
-    depends_on:
-      - db
+    networks:
+      - boltluna-net
 
-# networks:
-#   boltluna-net:
-#     external: true
-volumes:
-  pgdata:
-  caddy_data:
-  caddy_config:
+networks:
+  boltluna-net:
+    external: true
