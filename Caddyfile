@@ -1,0 +1,4 @@
+resume.boltluna.io{
+    encode gzip
+    reverse_proxy resume-app:3000
+}
