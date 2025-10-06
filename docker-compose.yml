@@ -1,16 +1,38 @@
-# version: "3.9"
+# # version: "3.9"
+# # services:
+# #   resume-app:
+# #     build: .
+# #     container_name: resume-app
+# #     restart: always
+# #     ports:
+# #       - "3001:3000"
+# #     env_file:
+# #       - .env
+
+
+
 # services:
 #   resume-app:
-#     build: .
+#     build:
+#       context: .
 #     container_name: resume-app
-#     restart: always
-#     ports:
-#       - "3001:3000"
+#     restart: "unless-stopped"
 #     env_file:
 #       - .env
+#     expose:
+#       - "3000"
+#     networks:
+#       - boltluna-net
+
+# networks:
+#   boltluna-net:
+#     external: true
 
 
 
+
+
+version: "3.9"
 services:
   resume-app:
     build:
@@ -19,11 +41,5 @@ services:
     restart: "unless-stopped"
     env_file:
       - .env
-    expose:
-      - "3000"
-    networks:
-      - boltluna-net
-
-networks:
-  boltluna-net:
-    external: true
+    ports:
+      - "3000:3000"   # open http://localhost:3000
