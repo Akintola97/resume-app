@@ -3,7 +3,7 @@ services:
     # (optional) pull a prebuilt image instead of building on the VPS:
     # image: ghcr.io/youruser/resume-app:2025-10-05
     env_file:
-      - .env.production
+      - .env
     ports: []            # removes the dev port publish
     expose:
       - "3000"           # visible *inside* docker only
