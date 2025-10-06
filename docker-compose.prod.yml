@@ -16,21 +16,15 @@
 #     external: true
 
 
-
 services:
   resume-app:
     build:
       context: .
-      dockerfile: dockerfile   # <- you have a lowercase "dockerfile"
+      dockerfile: dockerfile   # or Dockerfile if that’s your filename
     container_name: resume-app
     env_file:
       - .env
-    expose:
-      - "3000"                 # internal-only
-    networks:
-      - boltluna-net
+    ports:
+      - "3001:3000"   # host:container
     restart: unless-stopped
 
-networks:
-  boltluna-net:
-    external: true
