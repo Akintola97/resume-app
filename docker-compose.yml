@@ -16,7 +16,7 @@ services:
     build:
       context: .
     container_name: resume-app
-    restart: always
+    restart: "unless-stopped"
     env_file:
       - .env
     expose:
